@@ -8,11 +8,11 @@ configuration purposes
 
 # Features
 - Small footprint
-    -- RPC is not required
-    -- Tiny HTML frontend
-    -- Tiny C backend
+    - RPC is not required
+    - Tiny HTML frontend
+    - Tiny C backend
 - Flexible
-    -- Library files are placed under suparate folder `/system/xyz.pacmancoder.mg-wifi-web-config`
-       so they shouldn't interfere with existing files in your project
-    -- Configurable default login and password for web interface
-    -- Web interface login and password could be changed in runtime
+    - Library files are placed under suparate folder `/system/xyz.pacmancoder.mg-wifi-web-config`
+      so they shouldn't interfere with existing files in your project
+    - Configurable default login and password for web interface
+    - Web interface login and password could be changed in runtime

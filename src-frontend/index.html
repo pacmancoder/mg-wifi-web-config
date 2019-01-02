@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mongoose OS WiFi credentials config web interface</title>
+
+    <link rel="stylesheet" href="lit.css">
+    <link rel="stylesheet" href="util.css">
+</head>
+<body class="m4 mt0">
+    <div class="row mb2">
+        <div class="col p1">
+            <h4 class="m0">Mongoose OS WiFi credentials config web interface</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="card 6 col">
+            <div class="c">
+                <h4 class="m0 success">STA credentials</h4>
+                <hr class="b-success">
+                <div class="c mr3">
+                    <div class="row">
+                        Login
+                        <input class="card col w-100" type="text" placeholder="Login">
+                    </div>
+                    <div class="row">
+                        Password
+                        <input class="card col w-100" type="password" placeholder="Password">
+                    </div>
+                    <div class="row">
+                        <button class="btn rounded bg-success b-success white mt3">Set &amp; Reboot</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card 6 col">
+            <div class="c">
+                <h4 class="m0 warning">AP credentials</h4>
+                <hr class="b-warning">
+                <div class="c mr3">
+                    <div class="row">
+                        Login
+                        <input class="card col w-100" type="text" placeholder="Login">
+                    </div>
+                    <div class="row">
+                        Password
+                        <input class="card col w-100" type="password" placeholder="Password">
+                    </div>
+                    <div class="row">
+                        <button class="btn rounded bg-warning b-warning white mt3">Set &amp; Reboot</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt2">
+        <div class="card col p3">
+                <h4 class="m0 error">Danger zone</h4>
+                <hr class="b-error">
+                <div class="row">
+                    <button class="btn col rounded bg-error b-error white mt3">
+                        Disable WiFi config web interface
+                    </button>
+                </div>
+        </div>
+    </div>
+</body>
+</html>
