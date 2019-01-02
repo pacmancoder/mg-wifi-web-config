@@ -6,6 +6,8 @@
 
     <link rel="stylesheet" href="lit.css">
     <link rel="stylesheet" href="util.css">
+    
+    <script src="main.js"></script>
 </head>
 <body class="m4 mt0">
     <div class="row mb2">
@@ -21,14 +23,14 @@
                 <div class="c mr3">
                     <div class="row">
                         Login
-                        <input class="card col w-100" type="text" placeholder="Login">
+                        <input class="card col w-100" type="text" placeholder="Login" id="sta_login">
                     </div>
                     <div class="row">
                         Password
-                        <input class="card col w-100" type="password" placeholder="Password">
+                        <input class="card col w-100" type="password" placeholder="Password" id="sta_password">
                     </div>
                     <div class="row">
-                        <button class="btn rounded bg-success b-success white mt3">Set &amp; Reboot</button>
+                        <button class="btn rounded bg-success b-success white mt3" onclick="configure_sta()">Set credentials</button>
                     </div>
                 </div>
             </div>
@@ -40,14 +42,14 @@
                 <div class="c mr3">
                     <div class="row">
                         Login
-                        <input class="card col w-100" type="text" placeholder="Login">
+                        <input class="card col w-100" type="text" placeholder="Login" id="ap_login">
                     </div>
                     <div class="row">
                         Password
-                        <input class="card col w-100" type="password" placeholder="Password">
+                        <input class="card col w-100" type="password" placeholder="Password" id="ap_password">
                     </div>
                     <div class="row">
-                        <button class="btn rounded bg-warning b-warning white mt3">Set &amp; Reboot</button>
+                        <button class="btn rounded bg-warning b-warning white mt3" onclick="configure_ap()">Set credentials</button>
                     </div>
                 </div>
             </div>
@@ -58,8 +60,8 @@
                 <h4 class="m0 error">Danger zone</h4>
                 <hr class="b-error">
                 <div class="row">
-                    <button class="btn col rounded bg-error b-error white mt3">
-                        Disable WiFi config web interface
+                    <button class="btn col rounded bg-error b-error white mt3" onclick="disable_webui()">
+                        Disable WiFi configuration WebUI (this page)
                     </button>
                 </div>
         </div>
