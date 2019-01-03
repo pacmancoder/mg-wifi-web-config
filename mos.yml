@@ -1,7 +1,7 @@
-author: Vladislav Nikonov
+author: Vladislav Nikonov <pacmancoder@gmail.com>
 type: lib
 description: Provides WebUI access for WiFi configuration
-version: 0.9
+version: 1.0
 
 init_after:
   - mongoose
