@@ -25,7 +25,7 @@ configuration purposes
 For normal build just invoke `mos --platform <platform> build`  
 But if any files from `src-frontend` directory were cahnged, please invoke `rebuild_fs.sh` first.
 
-If `rebuild_fs.sh` will be invoked, please be sure that `purifycss`, `html-minifier` and `uglify-js` npm packages were instaled globally in the system.
+If `rebuild_fs.sh` will be invoked, please be sure that `purify-css`, `html-minifier` and `uglify-js` npm packages were instaled globally in the system.
 
 # Third-party code
 - [lit.js/util.js](https://github.com/ajusa/lit) frameworks

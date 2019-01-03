@@ -1,7 +1,5 @@
-#include "mgos_config.h"
-#include "mgos_mongoose.h"
+#include <mgos.h>
 
-#include <iostream>
 #include <sstream>
 #include <string>
 
@@ -11,12 +9,18 @@
 
 namespace
 {
-    // TODO: change
-    const char* files_path = "/system/xyz.pacmancoder.mg-wifi-web-config";
+    struct FileInfo
+    {
+        const char* path;
+        const char* mime;
+    };
 
-    const int HTTP_STATUS_SUCCESS = 200;
-    const int HTTP_STATUS_FAILURE = 500;
-    
+    const int HTTP_STATUS_SUCCESS   = 200;
+    const int HTTP_STATUS_FAILURE   = 500;
+    const int HTTP_STATUS_NOT_FOUND = 404;
+
+    const char* index_file = "__mgwwc_index.html";
+
     const mg_str msg_success_configure_sta = MG_MK_STR("SUCCESS: STA credentials have been changed");
     const mg_str msg_success_configure_ap = MG_MK_STR("SUCCESS: AP credentials have been changed");
     const mg_str msg_success_disable_webui = MG_MK_STR("SUCCESS: WebUI has been disabled");
@@ -39,7 +43,7 @@ namespace
 
     bool is_server_active = false;
 
-     mg_serve_http_opts s_http_server_opts;
+    mg_serve_http_opts serve_opts = {};
 }
 
 namespace
@@ -153,27 +157,34 @@ namespace
 
     void set_sta_credentials(Credentials c)
     {
-        std::cout << "STA credentials changed! SSID: " << c.login << std::endl;
+        LOG(LL_INFO, ("[MGWWC] STA credentials have been changed! SSID: %s", c.login.c_str()));
+
         mgos_sys_config_set_wifi_sta_ssid(c.login.c_str());
         mgos_sys_config_set_wifi_sta_pass(c.password.c_str());
+
+        save_cfg(&mgos_sys_config, nullptr);
     }
 
     void set_ap_credentials(Credentials c)
     {
-        std::cout << "AP credentials changed! SSID: " << c.login << std::endl;
+        LOG(LL_INFO, ("[MGWWC] AP credentials have been changed! SSID: %s", c.login.c_str()));
         mgos_sys_config_set_wifi_ap_ssid(c.login.c_str());
         mgos_sys_config_set_wifi_ap_pass(c.password.c_str());
+
+        save_cfg(&mgos_sys_config, nullptr);
     }
 
     void disable_webui()
     {
-        std::cout << "MGWWC WebUI Disabled" << std::endl;
-        mgos_sys_config_set_wifi_ap_enable(false);
+        LOG(LL_INFO, ("[MGWWC] WebIO has been disabled"));
+        mgos_sys_config_set_mgwwc_trigger_on_boot(false);
+
+        save_cfg(&mgos_sys_config, nullptr);
     }
 
     std::string get_bind_addr()
     {
-        static const std::string PORT = "8266";
+        static const std::string PORT = "80";
         const std::string ADDRESS = mgos_sys_config_get_wifi_ap_ip();
 
         return ADDRESS + ":" + PORT;
@@ -183,12 +194,18 @@ namespace
     {
         if (mg_vcmp(&message->method, "GET") == 0)
         {
-            mg_serve_http(c, message, s_http_server_opts);
+            const auto file_name = std::string(message->uri.p, message->uri.p + message->uri.len);
+
+            LOG(LL_INFO, ("[GET] file: %s", file_name.c_str()));
+
+            mg_serve_http(c, message, serve_opts);
         }
         else if(mg_vcmp(&message->method, "POST") == 0)
         {
             if (mg_vcmp(&message->uri, "/api/set_sta_credentials") == 0)
             {
+                LOG(LL_INFO, ("[POST] api: set sta credentials..."));
+
                 auto credentials = parse_credentials(message->body);
                 auto result = invoke_before_configure_sta_callback(credentials);
                 
@@ -203,6 +220,8 @@ namespace
             }
             else if (mg_vcmp(&message->uri, "/api/set_ap_credentials") == 0)
             {
+                LOG(LL_INFO, ("[POST] api: set ap credentials..."));
+
                 auto credentials = parse_credentials(message->body);
                 auto result = invoke_before_configure_ap_callback(credentials);
                 
@@ -217,6 +236,8 @@ namespace
             }
             else if (mg_vcmp(&message->uri, "/api/disable_webui") == 0)
             {
+                LOG(LL_INFO, ("[POST] api: disable webui..."));
+
                 auto result = invoke_before_disable_webui_callback();
                 
                 if (result.status == MGWWC_STATUS_SUCCESS)
@@ -247,13 +268,21 @@ namespace
 
     void start_service(mg_mgr* mgr)
     {
+        LOG(LL_INFO, ("[MGWWC] Starting mgwwc service..."));
         mgos_sys_config_set_wifi_ap_enable(true);
 
         mg_connection *nc = mg_bind(mgr, get_bind_addr().c_str(), event_handler, nullptr);
+        if (nc == nullptr)
+        {
+            LOG(LL_ERROR, ("[MGWW] Port bind failed"));
+        }
+
         mg_set_protocol_http_websocket(nc);
 
-        s_http_server_opts.document_root = files_path;
-        s_http_server_opts.enable_directory_listing = "yes";
+        serve_opts.enable_directory_listing = "no";
+        serve_opts.index_files = index_file;
+
+        LOG(LL_ERROR, ("[MGWWC] Service started!"));
     }
 }
 
@@ -329,7 +358,7 @@ extern "C"
 
     // Main library initialization function    
 
-    bool mgos_pwm_init(void)
+    bool mgos_mg_wifi_web_config_init(void)
     {
         if (mgos_sys_config_get_mgwwc_trigger_on_boot())
         {

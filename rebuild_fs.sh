@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SRC_FRONTEND_ROOT=src-frontend
-FS_ROOT=fs/system/xyz.pacmancoder.mg-wifi-web-config
+FS_ROOT=fs
 
 function compress_css_for_html ()
 {
@@ -24,14 +24,14 @@ function compress_js ()
 function make ()
 {
     echo Compressing css...
-    compress_css_for_html lit.css index.html
-    compress_css_for_html util.css index.html
+    compress_css_for_html __mgwwc_lit.css __mgwwc_index.html
+    compress_css_for_html __mgwwc_util.css __mgwwc_index.html
 
     echo Compressing js...
-    compress_js main.js
+    compress_js __mgwwc_main.js
 
     echo Compressing html...
-    compress_html index.html
+    compress_html __mgwwc_index.html
 
     echo Done.
 }
