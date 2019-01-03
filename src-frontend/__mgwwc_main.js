@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2019 Vladislav Nikonov
+ * Distributed under the MIT License (License terms are at http://opensource.org/licenses/MIT).
+ */
+
 function make_credentials_for(kind)
 {
     return document.getElementById(kind + "_login").value

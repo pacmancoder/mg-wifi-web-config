@@ -1,3 +1,8 @@
+/* 
+ * Copyright (c) 2019 Vladislav Nikonov
+ * Distributed under the MIT License (License terms are at http://opensource.org/licenses/MIT).
+ */
+
 #include <mgos.h>
 
 #include <sstream>
