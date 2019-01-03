@@ -1,0 +1,33 @@
+author: Vladislav Nikonov
+type: lib
+description: Provides WebUI access for WiFi configuration
+version: 0.9
+
+init_after:
+  - mongoose
+  - wifi
+
+sources:
+  - src
+
+includes:
+  - include
+
+filesystem:
+  - fs
+
+config_schema:
+  - ["mgwwc", "o", { "title": "wifi-web-config library settings"}]
+  - ["mgwwc.trigger_on_boot", "b", true, { "title": "Launch wifi configuration service on boot"}]
+
+libs:
+  - origin: https://github.com/mongoose-os-libs/mongoose
+  - origin: https://github.com/mongoose-os-libs/wifi
+
+tags:
+  - c
+  - cpp
+  - wifi
+  - config
+
+manifest_version: 2017-09-29
