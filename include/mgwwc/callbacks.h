@@ -7,25 +7,25 @@ extern "C" {
 #endif
 
 /// Represents wifi web config callback status code
-enum mgwwc_result_status
+typedef enum
 {
     MGWWC_STATUS_SUCCESS,
     MGWWC_STATUS_FAILURE,
     MGWWC_STATUS_INTERCEPTED
-};
+} mgwwc_result_status;
 
-enum mgwwc_action
+typedef enum
 {
     MGWWC_ACTION_CONFIGURE_STA,
     MGWWC_ACTION_CONFIGURE_AP,
     MGWWC_ACTION_DISABLE_WEB_UI
-};
+} mgwwc_action;
 
-struct mgwwc_credentials
+typedef struct
 {
-    mg_str login;
-    mg_str password;
-};
+    struct mg_str login;
+    struct mg_str password;
+} mgwwc_credentials;
 
 typedef mgwwc_credentials mgwwc_action_data_configure_sta;
 typedef mgwwc_credentials mgwwc_action_data_configure_ap;
@@ -35,15 +35,11 @@ typedef mgwwc_credentials mgwwc_action_data_configure_ap;
 ///
 /// Please do not construct directrly; Use WIFI_WEB_CONFIG_*
 /// macros instead
-struct mgwwc_result
+typedef struct
 {
     mgwwc_result_status status;
-    mg_str message;
-};
-
-/// Represents callback handle
-/// TODO: callback remove not implemented
-struct mgwwc_callback_handle {};
+    struct mg_str message;
+} mgwwc_result;
 
 /// Constructs result object, which signals successfull completition with provided message `msg`
 ///
